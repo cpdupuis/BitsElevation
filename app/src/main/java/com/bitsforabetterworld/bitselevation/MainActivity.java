@@ -1,5 +1,8 @@
 package com.bitsforabetterworld.bitselevation;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,16 +10,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements ElevationCallback {
     private LocationModel locationModel;
+    private String units = "meters";
+    private double unitMultiplier = 1.0;
+
+    private double computeUnitMultiplier(String units) {
+        if ("feet".equals(units)) {
+            return 3.28084;
+        }
+        else {
+            return 1.0;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
-        locationModel = new LocationModel(getApplicationContext(), this);
+        this.locationModel = new LocationModel(getApplicationContext(), this);
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -24,15 +40,25 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
                 updateElevation();
             }
         });
+
     }
 
     private void updateElevation() {
         locationModel.updateLocation();
     }
 
+    private void updateUnits() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.units = sharedPreferences.getString("pref_units", "meters");
+        this.unitMultiplier = computeUnitMultiplier(this.units);
+        Toast toast = Toast.makeText(getApplicationContext(), "Units: "+this.units+"; mutiplier: "+this.unitMultiplier, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public void elevationUpdated(double elevation) {
+        double elevationInUnits = elevation * this.unitMultiplier;
         TextView textView = (TextView) findViewById(R.id.elevationDisplay);
-        String elevationString = ""+elevation + " meters";
+        String elevationString = ""+elevationInUnits + " " + this.units;
         textView.setText(elevationString);
     }
 
@@ -50,22 +76,26 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        elevationUpdated(locationModel.getLastElevation());
+        updateUnits();
+        //updateElevation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }
+
