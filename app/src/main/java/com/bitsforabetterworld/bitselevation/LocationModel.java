@@ -30,24 +30,16 @@ public class LocationModel implements LocationListener {
     private String getBestLocationProviderName() {
         if (locationManager != null) {
             // Let's get a good location provider.
-            String providerName = locationManager.getBestProvider(criteria, true /*enabledOnly*/);
-            return providerName;
+            return locationManager.getBestProvider(criteria, true /*enabledOnly*/);
         }
         return null;
     }
 
-    public double getLastElevation() {
-        String locationProviderName = getBestLocationProviderName();
-        Location location = null;
-        if (locationProviderName != null) {
-            location = locationManager.getLastKnownLocation(locationProviderName);
-        }
-        return getElevationFromLocation(location);
-    }
-
     @Override
     public void onLocationChanged(Location location) {
-        elevationCallback.elevationUpdated(getElevationFromLocation(location));
+        if (location != null) {
+            elevationCallback.elevationUpdated(location.getAltitude(), location.getAccuracy());
+        }
     }
 
     @Override
@@ -65,12 +57,4 @@ public class LocationModel implements LocationListener {
 
     }
 
-    private static double getElevationFromLocation(Location location) {
-        if (location == null) {
-            return -42.0;
-        }
-        else {
-            return location.getAltitude();
-        }
-    }
 }

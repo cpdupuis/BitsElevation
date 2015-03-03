@@ -55,11 +55,20 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
         toast.show();
     }
 
-    public void elevationUpdated(double elevation) {
+    public void elevationUpdated(double elevation, double accuracy) {
         double elevationInUnits = elevation * this.unitMultiplier;
+        double accuracyInUnits = accuracy * this.unitMultiplier;
         TextView textView = (TextView) findViewById(R.id.elevationDisplay);
-        String elevationString = ""+elevationInUnits + " " + this.units;
-        textView.setText(elevationString);
+        textView.setText(""+elevationInUnits);
+
+        textView = (TextView) findViewById(R.id.accuracyDisplay);
+        textView.setText(""+accuracyInUnits);
+
+        textView= (TextView) findViewById(R.id.elevationUnitsDisplay);
+        textView.setText(this.units);
+
+        textView = (TextView) findViewById(R.id.accuracyUnitsDisplay);
+        textView.setText(this.units);
     }
 
     @Override
