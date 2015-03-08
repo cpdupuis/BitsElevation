@@ -35,6 +35,15 @@ public class LocationModel implements LocationListener {
         return null;
     }
 
+    public Location getLastLocation() {
+        if (locationManager != null) {
+            return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true /*enabledOnly*/));
+        }
+        else {
+            return null;
+        }
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {

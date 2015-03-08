@@ -13,7 +13,7 @@
         <item>meters</item>
         <item>feet</item>
     </string-array>
-    <string name="pref_units_default">metric</string>
+    <string name="pref_units_default">meters</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>

@@ -10,8 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import android.location.Location;
 
 public class MainActivity extends ActionBarActivity implements ElevationCallback {
     private LocationModel locationModel;
@@ -32,7 +31,9 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
         super.onCreate(savedInstanceState);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
+        updateUnits();
         this.locationModel = new LocationModel(getApplicationContext(), this);
+        updateToLastElevation();
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,28 +48,33 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
         locationModel.updateLocation();
     }
 
+    private void updateToLastElevation() {
+        Location lastLocation = locationModel.getLastLocation();
+        if (lastLocation != null) {
+            elevationUpdated(lastLocation.getAltitude(), lastLocation.getAccuracy());
+        }
+    }
+
     private void updateUnits() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.units = sharedPreferences.getString("pref_units", "meters");
         this.unitMultiplier = computeUnitMultiplier(this.units);
-        Toast toast = Toast.makeText(getApplicationContext(), "Units: "+this.units+"; mutiplier: "+this.unitMultiplier, Toast.LENGTH_LONG);
-        toast.show();
     }
 
     public void elevationUpdated(double elevation, double accuracy) {
         double elevationInUnits = elevation * this.unitMultiplier;
         double accuracyInUnits = accuracy * this.unitMultiplier;
-        TextView textView = (TextView) findViewById(R.id.elevationDisplay);
-        textView.setText(""+elevationInUnits);
+        TextView elevationDisplay = (TextView) findViewById(R.id.elevationDisplay);
+        elevationDisplay.setText(String.format("%.1f", elevationInUnits));
 
-        textView = (TextView) findViewById(R.id.accuracyDisplay);
-        textView.setText(""+accuracyInUnits);
+        TextView accuracyDisplay = (TextView) findViewById(R.id.accuracyDisplay);
+        accuracyDisplay.setText(String.format("%.1f", accuracyInUnits));
 
-        textView= (TextView) findViewById(R.id.elevationUnitsDisplay);
-        textView.setText(this.units);
+        TextView elevationUnits = (TextView) findViewById(R.id.elevationUnitsDisplay);
+        elevationUnits.setText(this.units);
 
-        textView = (TextView) findViewById(R.id.accuracyUnitsDisplay);
-        textView.setText(this.units);
+        TextView accuracyUnits = (TextView) findViewById(R.id.accuracyUnitsDisplay);
+        accuracyUnits.setText(this.units);
     }
 
     @Override
@@ -99,7 +105,7 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
     protected void onResume() {
         super.onResume();
         updateUnits();
-        //updateElevation();
+        updateToLastElevation();
     }
 
     @Override
