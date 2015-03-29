@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.location.Location;
 
-public class MainActivity extends ActionBarActivity implements ElevationCallback {
+import java.util.Locale;
+
+public class MainActivity extends ActionBarActivity implements LocationCallback {
     private LocationModel locationModel;
     private String units = "meters";
     private double unitMultiplier = 1.0;
@@ -51,7 +53,7 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
     private void updateToLastElevation() {
         Location lastLocation = locationModel.getLastLocation();
         if (lastLocation != null) {
-            elevationUpdated(lastLocation.getAltitude(), lastLocation.getAccuracy());
+            locationUpdated(lastLocation);
         }
     }
 
@@ -61,14 +63,21 @@ public class MainActivity extends ActionBarActivity implements ElevationCallback
         this.unitMultiplier = computeUnitMultiplier(this.units);
     }
 
-    public void elevationUpdated(double elevation, double accuracy) {
-        double elevationInUnits = elevation * this.unitMultiplier;
-        double accuracyInUnits = accuracy * this.unitMultiplier;
+    public void locationUpdated(Location location) {
+
+        double elevationInUnits = location.getAltitude() * this.unitMultiplier;
+        double accuracyInUnits = location.getAccuracy() * this.unitMultiplier;
         TextView elevationDisplay = (TextView) findViewById(R.id.elevationDisplay);
-        elevationDisplay.setText(String.format("%.1f", elevationInUnits));
+        elevationDisplay.setText(String.format(Locale.US, "%.1f", elevationInUnits));
+
+        TextView latitudeDisplay = (TextView) findViewById(R.id.latitudeDisplay);
+        latitudeDisplay.setText(FormatUtils.formatLatitude(location.getLatitude()));
+
+        TextView longitudeDisplay = (TextView) findViewById(R.id.longitudeDisplay);
+        longitudeDisplay.setText(FormatUtils.formatLongitude(location.getLongitude()));
 
         TextView accuracyDisplay = (TextView) findViewById(R.id.accuracyDisplay);
-        accuracyDisplay.setText(String.format("%.1f", accuracyInUnits));
+        accuracyDisplay.setText(String.format(Locale.US, "%.1f", accuracyInUnits));
 
         TextView elevationUnits = (TextView) findViewById(R.id.elevationUnitsDisplay);
         elevationUnits.setText(this.units);

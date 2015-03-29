@@ -9,14 +9,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="How high am I"
+        android:text="@string/activity_refresh"
         android:id="@+id/button"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="12dp"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:id="@+id/elevationRow"
+        android:id="@+id/latitudeRow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button"
@@ -25,20 +25,61 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Elevation:"/>
+            android:textStyle="bold"
+            android:text="@string/activity_latitude"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12px"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="I dunno man"
+            android:id="@+id/latitudeDisplay" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/longitudeRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/latitudeRow"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:text="@string/activity_longitude"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/longitudeDisplay" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/elevationRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/longitudeRow"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:text="@string/activity_elevation"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/elevationDisplay" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12px"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="meters"
             android:id="@+id/elevationUnitsDisplay" />
     </LinearLayout>
 
@@ -53,20 +94,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Accuracy:"/>
+            android:textStyle="bold"
+            android:text="@string/activity_accuracy"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12px"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="I dunno man"
             android:id="@+id/accuracyDisplay" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="12px"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="meters"
             android:id="@+id/accuracyUnitsDisplay" />
     </LinearLayout>
 

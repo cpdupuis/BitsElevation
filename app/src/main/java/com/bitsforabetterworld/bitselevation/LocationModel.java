@@ -10,11 +10,11 @@ import android.os.Looper;
 
 public class LocationModel implements LocationListener {
     private final LocationManager locationManager;
-    private final ElevationCallback elevationCallback;
+    private final LocationCallback locationCallback;
     private final Criteria criteria;
 
-    public LocationModel(Context context, ElevationCallback elevationCallback) {
-        this.elevationCallback = elevationCallback;
+    public LocationModel(Context context, LocationCallback locationCallback) {
+        this.locationCallback = locationCallback;
         this.criteria = new Criteria();
         criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
@@ -47,7 +47,7 @@ public class LocationModel implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            elevationCallback.elevationUpdated(location.getAltitude(), location.getAccuracy());
+            locationCallback.locationUpdated(location);
         }
     }
 
