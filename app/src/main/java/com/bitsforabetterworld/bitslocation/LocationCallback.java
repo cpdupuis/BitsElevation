@@ -1,4 +1,4 @@
-package com.bitsforabetterworld.bitselevation;
+package com.bitsforabetterworld.bitslocation;
 import android.location.Location;
 
 public interface LocationCallback {

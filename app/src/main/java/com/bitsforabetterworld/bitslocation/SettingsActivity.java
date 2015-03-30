@@ -1,4 +1,4 @@
-package com.bitsforabetterworld.bitselevation;
+package com.bitsforabetterworld.bitslocation;
 
 import android.os.Bundle;
 import android.app.Activity;

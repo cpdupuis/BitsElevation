@@ -1,4 +1,4 @@
-package com.bitsforabetterworld.bitselevation;
+package com.bitsforabetterworld.bitslocation;
 
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
